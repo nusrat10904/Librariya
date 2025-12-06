@@ -1,0 +1,206 @@
+erDiagram
+    %% Core Entity Tables
+    USERS {
+        int user_id PK
+        varchar username UK
+        varchar email UK
+        varchar password_hash
+        varchar first_name
+        varchar last_name
+        varchar phone
+        enum user_type
+        boolean is_active
+        boolean email_verified
+        decimal wallet_balance
+        decimal rating
+        varchar city
+        datetime created_at
+        datetime last_login
+    }
+
+    AUTHORS {
+        int author_id PK
+        varchar first_name
+        varchar last_name
+        text biography
+        date birth_date
+        varchar nationality
+        datetime created_at
+    }
+
+    BOOKS {
+        int book_id PK
+        varchar title
+        varchar isbn UK
+        text description
+        int pages
+        date publication_date
+        varchar language
+        decimal average_rating
+        int total_reviews
+        varchar cover_image
+        boolean is_active
+        datetime created_at
+    }
+
+    CATEGORIES {
+        int category_id PK
+        varchar category_name UK
+        text description
+        boolean is_active
+        datetime created_at
+    }
+
+    STATIONERY_CATEGORIES {
+        int category_id PK
+        varchar category_name UK
+        text description
+        boolean is_active
+        datetime created_at
+    }
+
+    STATIONERY_ITEMS {
+        int item_id PK
+        int category_id FK
+        varchar item_name
+        text description
+        decimal price
+        int stock_quantity
+        varchar image_url
+        boolean is_active
+        datetime created_at
+    }
+
+    %% Junction Tables (Many-to-Many)
+    BOOK_AUTHORS {
+        int book_id FK
+        int author_id FK
+    }
+
+    BOOK_CATEGORIES {
+        int book_id FK
+        int category_id FK
+    }
+
+    %% Business Logic Tables
+    BOOK_LISTINGS {
+        int listing_id PK
+        int book_id FK
+        int seller_id FK
+        enum listing_type
+        enum condition_type
+        decimal sell_price
+        decimal rent_price_per_month
+        text description
+        varchar location
+        enum status
+        datetime created_at
+    }
+
+    ORDERS {
+        int order_id PK
+        int buyer_id FK
+        enum order_type
+        decimal total_amount
+        text shipping_address
+        varchar payment_method
+        enum payment_status
+        enum order_status
+        datetime created_at
+    }
+
+    ORDER_ITEMS {
+        int order_item_id PK
+        int order_id FK
+        int listing_id FK
+        int stationery_item_id FK
+        int quantity
+        decimal unit_price
+        decimal total_price
+        date rental_start_date
+        date rental_end_date
+        int rental_duration
+    }
+
+    CART_ITEMS {
+        int cart_id PK
+        int user_id FK
+        int listing_id FK
+        int stationery_item_id FK
+        int quantity
+        int rental_duration
+        datetime added_at
+    }
+
+    DONATIONS {
+        int donation_id PK
+        int donor_id FK
+        int book_id FK
+        int quantity
+        enum condition_type
+        varchar donation_type
+        varchar recipient_organization
+        boolean pickup_required
+        text pickup_address
+        enum status
+        datetime created_at
+    }
+
+    REVIEWS {
+        int review_id PK
+        int book_id FK
+        int user_id FK
+        int rating
+        varchar title
+        text review_text
+        boolean is_verified_purchase
+        boolean is_approved
+        datetime created_at
+    }
+
+    MONTHLY_QUIZ {
+        int quiz_id PK
+        varchar title
+        text questions
+        date quiz_date
+        boolean is_active
+        datetime created_at
+    }
+
+    QUIZ_PARTICIPANTS {
+        int participant_id PK
+        int quiz_id FK
+        int user_id FK
+        json answers
+        int score
+        datetime completed_at
+    }
+
+    %% Relationships
+    USERS ||--o{ BOOK_LISTINGS : "seller_id"
+    USERS ||--o{ ORDERS : "buyer_id"
+    USERS ||--o{ CART_ITEMS : "user_id"
+    USERS ||--o{ DONATIONS : "donor_id"
+    USERS ||--o{ REVIEWS : "user_id"
+    USERS ||--o{ QUIZ_PARTICIPANTS : "user_id"
+
+    BOOKS ||--o{ BOOK_AUTHORS : "book_id"
+    BOOKS ||--o{ BOOK_CATEGORIES : "book_id"
+    BOOKS ||--o{ BOOK_LISTINGS : "book_id"
+    BOOKS ||--o{ DONATIONS : "book_id"
+    BOOKS ||--o{ REVIEWS : "book_id"
+
+    AUTHORS ||--o{ BOOK_AUTHORS : "author_id"
+    CATEGORIES ||--o{ BOOK_CATEGORIES : "category_id"
+    
+    STATIONERY_CATEGORIES ||--o{ STATIONERY_ITEMS : "category_id"
+    
+    BOOK_LISTINGS ||--o{ ORDER_ITEMS : "listing_id"
+    BOOK_LISTINGS ||--o{ CART_ITEMS : "listing_id"
+    
+    STATIONERY_ITEMS ||--o{ ORDER_ITEMS : "stationery_item_id"
+    STATIONERY_ITEMS ||--o{ CART_ITEMS : "stationery_item_id"
+    
+    ORDERS ||--o{ ORDER_ITEMS : "order_id"
+    
+    MONTHLY_QUIZ ||--o{ QUIZ_PARTICIPANTS : "quiz_id"

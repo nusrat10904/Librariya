@@ -1,0 +1,62 @@
+Key Features Implemented:
+User Management
+
+Users table with roles (customer, admin, moderator)
+Profile information, ratings, and wallet system
+
+Book Management
+
+Books table with detailed information (ISBN, title, description, etc.)
+Authors and Publishers tables with relationships
+Categories for genre-based organization
+Book-Author and Book-Category many-to-many relationships
+
+Marketplace Features
+
+Book Listings: Users can sell, rent, or both
+E-books: Digital book sales with download tracking
+Stationery Items: Pencils, erasers, sharpeners, notebooks, etc.
+Flexible pricing for different rental periods (daily, weekly, monthly)
+
+Transaction System
+
+Orders table supporting purchases, rentals, e-books, and stationery
+Order items tracking with rental duration support
+Multiple payment and shipping options
+
+Review System
+
+Book reviews with ratings (1-5 stars)
+Helpfulness voting on reviews
+Verified purchase tracking
+
+Additional Features
+
+Donations: Users can donate books to libraries/charities
+Monthly Quizzes: Complete quiz system with questions, answers, and scoring
+Wishlists: Users can save books they want
+Shopping Cart: Temporary storage before purchase
+Messaging: User-to-user communication
+Notifications: System-wide notification system
+
+Admin Features
+
+Complete admin oversight with activity logging
+Ability to manage all content (books, users, orders, donations, quizzes)
+Admin logs for tracking all administrative actions
+
+Performance Optimizations
+
+Strategic indexes on frequently queried fields
+Efficient data types and constraints
+Normalized structure to avoid data redundancy
+
+The schema supports advanced features like:
+
+Multiple rental durations with flexible pricing
+E-book download limits and DRM protection
+Quiz ranking and scoring systems
+Donation workflow with approval process
+Comprehensive search and filtering capabilities
+
+
